@@ -12,4 +12,5 @@ public class PaymentStrategy {
     private String frequency;
     private String nextPaymentDate;
     private String payee;
+    private String accountMid;
 }
