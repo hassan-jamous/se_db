@@ -1,5 +1,6 @@
 package com.nab.se.db.components;
 
+import com.nab.se.db.nonFunctional.exceptions.InvalidProductTypeException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,7 +10,7 @@ public class ProductTypeConverter {
         if(productType.equals("pension")) {
             return 21;
         } else {
-            throw new RuntimeException("product type doesnt exist");
+            throw new InvalidProductTypeException();
         }
     }
 }
