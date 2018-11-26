@@ -1,0 +1,50 @@
+group 'se'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext {
+        gradleWrapperVersion = '4.10.2'
+        springBootVersion  = '2.1.0.RELEASE'
+        springCloudVersion = 'Finchley.RELEASE'
+        dependencyManagementPluginVersion = '1.0.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-jdbc"
+    compile "org.projectlombok:lombok:1.16.10"
+    //compile "com.oracle:ojdbc7:12.1.0.1"
+    compile files('lib/ojdbc7-12.1.0.1.jar')
+    compile "org.apache.tomcat:tomcat-jdbc"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}
+
+
+task wrapper(type: Wrapper) {
+    distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleWrapperVersion}-all.zip"
+}

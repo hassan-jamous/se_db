@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1825/mkcdb
+    username: OPS$UNLBUILD
+    password: UNLBUILD
+    type: org.apache.tomcat.jdbc.pool.DataSource

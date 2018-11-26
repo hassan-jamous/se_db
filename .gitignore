@@ -1,0 +1,18 @@
+# IntelliJ IDEA
+.idea
+*.ipr
+*.iws
+*.iml
+
+# Gradle
+.gradle
+gradle
+gradlew
+gradlew.bat
+build
+
+# Logs
+*.log
+*.log.*.gz
+
+out
