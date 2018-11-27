@@ -16,7 +16,7 @@ public class AccountService {
     private ProductTypeConverter productTypeConverter;
 
 
-    public PaymentStrategy getAccountPayemntStrategy(String productType) {
+    public PaymentStrategy getAccountPaymentStrategy(String productType) {
         return accountComponent.getAccountPaymentStrategy(this.productTypeConverter.convertProduct(productType));
     }
 }

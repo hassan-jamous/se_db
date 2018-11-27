@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ InvalidProductTypeException.class })
+    @ExceptionHandler({ InvalidProductTypeException.class, RequestValidationException.class })
     public ResponseEntity<ApiError> handleInvalidInput(Exception e) {
         return new ResponseEntity<>(new ApiError(ErrorCode.INVALID_REQUEST.getId(),
                 ErrorCode.INVALID_REQUEST.getMsg()), HttpStatus.BAD_REQUEST);
