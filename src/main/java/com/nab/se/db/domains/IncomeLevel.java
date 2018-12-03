@@ -10,9 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IncomeLevel {
-    private String gross_annual_income;
-    private String min_income_level;
-    private String max_income_level;
-    private String domain_value;
-    private String account_mid;
+    private String grossAnnualIncome;
+    private String minIncomeLevel;
+    private String maxIncomeLevel;
+    private String domainValue;
+    private String accountMid;
 }

@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "/testData/accounts")
 public class AccountsController {
 
     @Autowired
@@ -21,29 +23,26 @@ public class AccountsController {
     @Autowired
     AccountRequestValidator accountRequestValidator;
 
-    @GetMapping(value = "/testData/accounts/paymentStrategy")
+    @GetMapping(value = "/paymentStrategy")
     public ResponseEntity<PaymentStrategy> getAccountPaymentStrategy(final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetAccountPaymentStrategy(accountRequest);
         PaymentStrategy response = accountService.getAccountPaymentStrategy(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/testData/accounts/incomeLevel")
+    @GetMapping(value = "/incomeLevel")
     public ResponseEntity<IncomeLevel> getAccountIncomeLevel(final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetAccountIncomeLevel(accountRequest);
         IncomeLevel response = accountService.getAccountIncomeLevel(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/testData/accounts/preservationDetails")
+    @GetMapping(value = "/preservationDetails")
     public ResponseEntity<PreservationDetails> getAccountPreservationDetails(final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetAccountPreservationDetails(accountRequest);
         PreservationDetails response = accountService.getAccountPreservationDetails(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
-
 
 }
 

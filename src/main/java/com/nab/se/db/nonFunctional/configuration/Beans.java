@@ -16,7 +16,7 @@ public class Beans {
 
     @Bean
     public NamedParameterJdbcTemplate restTemplate(JdbcTemplate jdbcTemplate) {
-        jdbcTemplate.setQueryTimeout(1);
+        jdbcTemplate.setQueryTimeout(5);
         NamedParameterJdbcTemplate namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         return namedTemplate;
     }
