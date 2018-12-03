@@ -13,4 +13,16 @@ public class AccountRequestValidator {
             throw new RequestValidationException();
         }
     }
+
+    public void validateGetAccountIncomeLevel(AccountRequest accountRequest){
+        if (accountRequest.getLimit() == null || accountRequest.getProductType() == null || accountRequest.getLimit() != 1 || accountRequest.getProductType().isEmpty()) {
+            throw new RequestValidationException();
+        }
+    }
+
+    public void validateGetAccountPreservationDetails(AccountRequest accountRequest){
+        if (accountRequest.getLimit() == null || accountRequest.getProductType() == null || accountRequest.getLimit() != 1 || accountRequest.getProductType().isEmpty()) {
+            throw new RequestValidationException();
+        }
+    }
 }

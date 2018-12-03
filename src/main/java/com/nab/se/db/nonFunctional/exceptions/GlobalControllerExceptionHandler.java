@@ -27,7 +27,7 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<ApiError> handleOtherException(Exception e) {
         return new ResponseEntity<>(new ApiError(ErrorCode.UNKNOWN_EXCEPTION.getId(),
-                ErrorCode.UNKNOWN_EXCEPTION.getMsg()), HttpStatus.INTERNAL_SERVER_ERROR);
+                e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
