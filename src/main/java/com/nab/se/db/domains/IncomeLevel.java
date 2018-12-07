@@ -15,4 +15,5 @@ public class IncomeLevel {
     private String maxIncomeLevel;
     private String domainValue;
     private String accountMid;
+    private String customerNumber;
 }

@@ -1,5 +1,6 @@
 package com.nab.se.db.components;
 
+import com.nab.se.db.domains.FundStrategy;
 import com.nab.se.db.domains.IncomeLevel;
 import com.nab.se.db.domains.PaymentStrategy;
 import com.nab.se.db.domains.PreservationDetails;
@@ -9,11 +10,36 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class AccountComponent {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    public List<FundStrategy> getFundStrategy(String acountMid) {
+        String sql = " SELECT invt.investment_dsp_name fundName," +
+                " DECODE(NVL(acis.draw_down_sequence,0) , 0 , acis.percentage || '  %' ," +
+                " acis.draw_down_sequence) drawDown" +
+                " FROM account_strategy acst," +
+                " account_invest_strategy acis," +
+                " investment_unit_type invt" +
+                " WHERE acst.account_mid = :accountMid" +
+                " AND acst.account_strategy_lid IN (20,21)" +
+                " AND acst.account_strategy_mid = acis.account_strategy_mid" +
+                " AND acst.expire_yn = 'N'" +
+                " AND acis.expire_yn = 'N'" +
+                " AND acis.investment_mid = invt.investment_mid" +
+                " AND invt.unit_type_lid  = 0" +
+                " ORDER BY acis.draw_down_sequence ASC, acis.percentage DESC";
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("accountMid", acountMid),
+                new BeanPropertyRowMapper<>(FundStrategy.class));
+
+    }
+
 
     public PaymentStrategy getAccountPaymentStrategy(int productType) {
         String sql = " SELECT acst.total_amount AS Amount," +
@@ -47,10 +73,12 @@ public class AccountComponent {
                 " ap.min_income_level AS minIncomeLevel," +
                 " ap.max_income_level as maxIncomeLevel," +
                 " udv.domain_value as domainValue," +
-                " acct.account_mid as accountMid" +
-                " FROM account_pension ap,account acct, account_source acc_s, unl_domain_value udv " +
+                " acct.account_mid as accountMid," +
+                " acm.customer_number as customerNumber"+
+                " FROM account_pension ap,account acct, account_source acc_s, unl_domain_value udv, advisor_client_mview acm" +
                 " WHERE acc_s.component_type = 'P'" +
                 " AND acct.account_mid = ap.account_mid" +
+                " AND acm.account_mid = acct.account_mid" +
                 " AND ap.income_stream_phase_lid = udv.domain_lid" +
                 " AND udv.domain_name = 'INCOME_STREAM_PHASE' " +
                 " And acct.account_status_lid=1" +

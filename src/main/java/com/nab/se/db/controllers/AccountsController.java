@@ -1,17 +1,15 @@
 package com.nab.se.db.controllers;
 
 import com.nab.se.db.components.requestValidators.AccountRequestValidator;
-import com.nab.se.db.domains.AccountRequest;
-import com.nab.se.db.domains.IncomeLevel;
-import com.nab.se.db.domains.PaymentStrategy;
-import com.nab.se.db.domains.PreservationDetails;
+import com.nab.se.db.domains.*;
 import com.nab.se.db.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/testData/accounts")
@@ -41,6 +39,13 @@ public class AccountsController {
     public ResponseEntity<PreservationDetails> getAccountPreservationDetails(final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetAccountPreservationDetails(accountRequest);
         PreservationDetails response = accountService.getAccountPreservationDetails(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/fundStrategy")
+    public ResponseEntity<List<FundStrategy>> getAccountPreservationDetails(@PathVariable("accountMid") String accountMid) {
+        //this.accountRequestValidator.validateGetAccountPreservationDetails(accountRequest);
+        List<FundStrategy> response = accountService.getFundStrategy(accountMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
