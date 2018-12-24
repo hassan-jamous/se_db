@@ -21,13 +21,6 @@ public class AccountsController {
     @Autowired
     AccountRequestValidator accountRequestValidator;
 
-    @GetMapping(value = "/paymentStrategy")
-    public ResponseEntity<PaymentStrategy> getAccountPaymentStrategy(final AccountRequest accountRequest) {
-        this.accountRequestValidator.validateGetAccountPaymentStrategy(accountRequest);
-        PaymentStrategy response = accountService.getAccountPaymentStrategy(accountRequest.getProductType());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @GetMapping(value = "/incomeLevel")
     public ResponseEntity<IncomeLevel> getAccountIncomeLevel(final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetAccountIncomeLevel(accountRequest);
@@ -35,10 +28,17 @@ public class AccountsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/preservationDetails")
-    public ResponseEntity<PreservationDetails> getAccountPreservationDetails(final AccountRequest accountRequest) {
+    @GetMapping(value = "/{accountMid}/regularIncomePaymentDetails")
+    public ResponseEntity<RegularIncomePaymentDetails> getRegularIncomePaymentDetails(@PathVariable("accountMid") String accountMid,final AccountRequest accountRequest) {
+        this.accountRequestValidator.validateGetRegularIncomePaymentDetails(accountRequest);
+        RegularIncomePaymentDetails response = accountService.getRegularIncomePaymentDetails(accountRequest.getProductType(), accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/preservationDetails")
+    public ResponseEntity<PreservationDetails> getAccountPreservationDetails(@PathVariable("accountMid") String accountMid,final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetAccountPreservationDetails(accountRequest);
-        PreservationDetails response = accountService.getAccountPreservationDetails(accountRequest.getProductType());
+        PreservationDetails response = accountService.getAccountPreservationDetails(accountRequest.getProductType(), accountMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -46,6 +46,18 @@ public class AccountsController {
     public ResponseEntity<List<FundStrategy>> getAccountPreservationDetails(@PathVariable("accountMid") String accountMid) {
         //this.accountRequestValidator.validateGetAccountPreservationDetails(accountRequest);
         List<FundStrategy> response = accountService.getFundStrategy(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/combination")
+    public ResponseEntity<Combination> getCombination(final AccountRequest accountRequest) {
+        Combination response = accountService.getCombination(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/mapping")
+    public ResponseEntity<MappingTest> getMapping(final AccountRequest accountRequest) {
+        MappingTest response = accountService.getMapping(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

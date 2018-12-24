@@ -2,7 +2,7 @@ package com.nab.se.db.components;
 
 import com.nab.se.db.domains.FundStrategy;
 import com.nab.se.db.domains.IncomeLevel;
-import com.nab.se.db.domains.PaymentStrategy;
+import com.nab.se.db.domains.RegularIncomePaymentDetails;
 import com.nab.se.db.domains.PreservationDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -41,24 +41,26 @@ public class AccountComponent {
     }
 
 
-    public PaymentStrategy getAccountPaymentStrategy(int productType) {
+   public RegularIncomePaymentDetails getRegularIncomePaymentDetails(int productType ,String accountMid) {
         String sql = " SELECT acst.total_amount AS Amount," +
                 " unl.domain_value AS Frequency," +
-                " TO_CHAR(acst.start_date , 'DD-MON-YYYY') AS NextPaymentDate," +
+                " TO_CHAR(acst.start_date , 'YYYY-MM-DD') AS NextPaymentDate," +
                 " acst.payee_name AS Payee," +
                 " acst.ACCOUNT_MID as AccountMid" +
                 " FROM account_strategy acst, unl_domain_value unl" +
                 " WHERE acst.account_strategy_lid = :productType" +
                 " AND acst.expire_yn = 'N'" +
                 " AND acst.frequency_lid = unl.domain_lid" +
+                " AND acst.ACCOUNT_MID = :accountMid" +
                 " AND unl.domain_name = 'FREQUENCY'  " +
                 " And ROWNUM = 1" +
                 " ORDER BY acst.payee_name";
 
         return namedParameterJdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource().addValue("productType", productType),
+                new MapSqlParameterSource().
+                        addValue("productType", productType).addValue("accountMid", accountMid),
                 (resultSet, rowNum) ->
-                        new PaymentStrategy(resultSet.getString("Amount"),
+                        new RegularIncomePaymentDetails(resultSet.getString("Amount"),
                                 resultSet.getString("Frequency"),
                                 resultSet.getString("NextPaymentDate"),
                                 resultSet.getString("Payee"),
@@ -72,9 +74,10 @@ public class AccountComponent {
         String sql = " SELECT ap.gross_annual_income AS grossAnnualIncome," +
                 " ap.min_income_level AS minIncomeLevel," +
                 " ap.max_income_level as maxIncomeLevel," +
-                " udv.domain_value as domainValue," +
-                " acct.account_mid as accountMid," +
-                " acm.customer_number as customerNumber"+
+                " udv.domain_value as incomeStreamPhase," +
+                " acct.account_mid as accountToken," +
+                " acm.customer_number as customerNumber,"+
+                " acm.account_number as accountIdDisplay" +
                 " FROM account_pension ap,account acct, account_source acc_s, unl_domain_value udv, advisor_client_mview acm" +
                 " WHERE acc_s.component_type = 'P'" +
                 " AND acct.account_mid = ap.account_mid" +
@@ -90,7 +93,7 @@ public class AccountComponent {
 
     }
 
-    public PreservationDetails getAccountPreservationDetails(int productType) {
+    public PreservationDetails getAccountPreservationDetails(int productType ,String accountMid) {
         String sql = " SELECT NVL(a.component_type,'X') AS componentType," +
                 " ROUND(NVL(bpr.restricted_amount,0),2) AS restrictedAmount," +
                 " ROUND(NVL(bpr.unrestricted_amount,0),2) AS unrestrictedAmount," +
@@ -100,16 +103,17 @@ public class AccountComponent {
                 "NVL(bpr.tax_free_percent,0) AS taxFreePercent," +
                 "TRIM(NVL(bpr.capsil_disp_preserv_yn,'N')) AS displayPreservationYn," +
                 "bpr.effective_date AS effectiveDate," +
-                " a.account_mid AS accountMid" +
+                "a.account_mid AS accountMid" +
                 " FROM balance_preservation bpr,account_source a" +
-                " WHERE a.account_mid = bpr.account_mid" +
+                " WHERE a.ACCOUNT_MID = :accountMid" +
                 " AND nvl(bpr.effective_date,'01-JAN-1900') = (select nvl(max(effective_date),'01-JAN-1900') from balance_preservation)" +
                 " And ROWNUM = 1";
 
-
         return namedParameterJdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource().addValue("productType", productType),
+                new MapSqlParameterSource().
+                        addValue("productType", productType).addValue("accountMid", accountMid),
                 new BeanPropertyRowMapper<>(PreservationDetails.class));
+
     }
 
 

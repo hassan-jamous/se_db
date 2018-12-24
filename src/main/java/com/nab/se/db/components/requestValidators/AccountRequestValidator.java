@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountRequestValidator {
 
-    public void validateGetAccountPaymentStrategy(AccountRequest accountRequest){
+    public void validateGetRegularIncomePaymentDetails(AccountRequest accountRequest){
         if (accountRequest.getLimit() == null || accountRequest.getProductType() == null || accountRequest.getLimit() != 1 || accountRequest.getProductType().isEmpty()) {
             throw new RequestValidationException();
         }

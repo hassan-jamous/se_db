@@ -13,7 +13,8 @@ public class IncomeLevel {
     private String grossAnnualIncome;
     private String minIncomeLevel;
     private String maxIncomeLevel;
-    private String domainValue;
-    private String accountMid;
+    private String incomeStreamPhase;
+    private String accountToken;
     private String customerNumber;
+    private String accountIdDisplay;
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PaymentStrategy {
+public class RegularIncomePaymentDetails {
     private String amount;
     private String frequency;
     private String nextPaymentDate;
