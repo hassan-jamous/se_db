@@ -1,5 +1,6 @@
 package com.nab.se.db.controllers;
 
+import com.nab.se.db.components.FunctionExample;
 import com.nab.se.db.components.requestValidators.AccountRequestValidator;
 import com.nab.se.db.domains.*;
 import com.nab.se.db.services.AccountService;
@@ -8,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/testData/accounts")
 public class AccountsController {
+
+    @Autowired
+    FunctionExample functionExample;
 
     @Autowired
     private AccountService accountService;
@@ -59,6 +62,12 @@ public class AccountsController {
     public ResponseEntity<MappingTest> getMapping(final AccountRequest accountRequest) {
         MappingTest response = accountService.getMapping(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/functionTest")
+    public ResponseEntity<Double> getAccountPremium() throws Exception{
+        return new ResponseEntity<>(this.functionExample.getAccountBalance("13195908"), HttpStatus.OK);
     }
 
 }

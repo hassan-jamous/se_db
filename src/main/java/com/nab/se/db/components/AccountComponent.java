@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Random;
 
 @Repository
 public class AccountComponent {
@@ -37,6 +38,7 @@ public class AccountComponent {
         return namedParameterJdbcTemplate.query(sql,
                 new MapSqlParameterSource().addValue("accountMid", acountMid),
                 new BeanPropertyRowMapper<>(FundStrategy.class));
+
 
     }
 
@@ -71,13 +73,15 @@ public class AccountComponent {
 
 
     public IncomeLevel getAccountIncomeLevel(int productType) {
-        String sql = " SELECT ap.gross_annual_income AS grossAnnualIncome," +
+        int randomRow = new Random().nextInt(28) + 1;
+        String sql = "select * from (SELECT ap.gross_annual_income AS grossAnnualIncome," +
                 " ap.min_income_level AS minIncomeLevel," +
                 " ap.max_income_level as maxIncomeLevel," +
                 " udv.domain_value as incomeStreamPhase," +
                 " acct.account_mid as accountToken," +
                 " acm.customer_number as customerNumber,"+
                 " acm.account_number as accountIdDisplay" +
+                " rownum as r" +
                 " FROM account_pension ap,account acct, account_source acc_s, unl_domain_value udv, advisor_client_mview acm" +
                 " WHERE acc_s.component_type = 'P'" +
                 " AND acct.account_mid = ap.account_mid" +
@@ -85,7 +89,8 @@ public class AccountComponent {
                 " AND ap.income_stream_phase_lid = udv.domain_lid" +
                 " AND udv.domain_name = 'INCOME_STREAM_PHASE' " +
                 " And acct.account_status_lid=1" +
-                " And ROWNUM = 1";
+                " And ROWNUM < 30)" +
+                " where r = " + randomRow;
 
         return namedParameterJdbcTemplate.queryForObject(sql,
                 new MapSqlParameterSource().addValue("productType", productType),
