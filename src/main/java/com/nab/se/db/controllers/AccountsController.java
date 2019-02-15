@@ -4,6 +4,7 @@ import com.nab.se.db.components.FunctionExample;
 import com.nab.se.db.components.requestValidators.AccountRequestValidator;
 import com.nab.se.db.domains.*;
 import com.nab.se.db.services.AccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/testData/accounts")
 public class AccountsController {
@@ -52,8 +54,11 @@ public class AccountsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
     @GetMapping(value = "/combination")
-    public ResponseEntity<Combination> getCombination(final AccountRequest accountRequest) {
+    public ResponseEntity<Combination> getCombination(final AccountRequest accountRequest) throws Exception {
+
+        log.info(accountRequest.toString());
         Combination response = accountService.getCombination(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -65,10 +70,18 @@ public class AccountsController {
     }
 
 
-    @GetMapping(value = "/functionTest")
-    public ResponseEntity<Double> getAccountPremium() throws Exception{
-        return new ResponseEntity<>(this.functionExample.getAccountBalance("13195908"), HttpStatus.OK);
+    @GetMapping(value = "/{accountMid}/accountBalance")
+    public ResponseEntity<Double> getAccountPremium(@PathVariable("accountMid") String accountMid) throws Exception{
+        return new ResponseEntity<>(this.functionExample.getAccountBalance(accountMid), HttpStatus.OK);
     }
+
+//    @GetMapping("/response/errpr")
+//    public ResponseEntity<String> getFucked() throws Exception {
+//        if (true) {
+//            throw new Exception("FUCKING DICK FUCK");
+//        }
+//        return new ResponseEntity<>("GET FUCKED", HttpStatus.OK);
+//    }
 
 }
 

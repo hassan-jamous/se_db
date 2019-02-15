@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IncomeLevel {
-    private String grossAnnualIncome;
+    private String grossAnnIncome;
     private String minIncomeLevel;
     private String maxIncomeLevel;
     private String incomeStreamPhase;

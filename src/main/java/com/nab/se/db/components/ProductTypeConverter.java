@@ -7,9 +7,14 @@ import org.springframework.stereotype.Component;
 public class ProductTypeConverter {
 
     public int convertProduct(String productType) {
-        if(productType.equals("pension")) {
-            return 21;
-        } else {
+        if(productType.equals("MKPF")) {
+            return 38;
+        }
+        else  if(productType.equals("MKP")) {
+            return 39;
+        }
+
+        else {
             throw new InvalidProductTypeException();
         }
     }

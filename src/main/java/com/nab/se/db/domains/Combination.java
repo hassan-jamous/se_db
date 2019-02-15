@@ -16,4 +16,5 @@ public class Combination {
     private RegularIncomePaymentDetails regIncomePayment;
     private PreservationDetails preservationDetails;
     private List<FundStrategy> fundStrategies;
+    private Double accountBalance;
 }

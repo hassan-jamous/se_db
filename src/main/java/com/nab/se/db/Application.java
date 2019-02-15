@@ -18,7 +18,7 @@ public class Application {
     @Bean
     public SimpleJdbcCall getSimpleJdbcCall(JdbcTemplate jdbcTemplate) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
-        simpleJdbcCall.getJdbcTemplate().setQueryTimeout(20);
+        simpleJdbcCall.getJdbcTemplate().setQueryTimeout(50);
         return simpleJdbcCall;
     }
 }
