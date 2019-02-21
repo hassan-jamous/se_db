@@ -36,7 +36,8 @@ public class AccountsController {
     @GetMapping(value = "/{accountMid}/regularIncomePaymentDetails")
     public ResponseEntity<RegularIncomePaymentDetails> getRegularIncomePaymentDetails(@PathVariable("accountMid") String accountMid,final AccountRequest accountRequest) {
         this.accountRequestValidator.validateGetRegularIncomePaymentDetails(accountRequest);
-        RegularIncomePaymentDetails response = accountService.getRegularIncomePaymentDetails(accountRequest.getProductType(), accountMid);
+        RegularIncomePaymentDetails response = accountService.getRegularIncomePaymentDetails(accountRequest.getProductType(),accountMid);
+        //RegularIncomePaymentDetails response = accountService.getRegularIncomePaymentDetails();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

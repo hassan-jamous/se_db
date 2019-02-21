@@ -58,18 +58,13 @@ public class AccountComponent {
                 " And ROWNUM = 1" +
                 " ORDER BY acst.payee_name";
 
-        return namedParameterJdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource().
-                        addValue("productType", productType).addValue("accountMid", accountMid),
-                (resultSet, rowNum) ->
-                        new RegularIncomePaymentDetails(resultSet.getString("Amount"),
-                                resultSet.getString("Frequency"),
-                                resultSet.getString("NextPaymentDate"),
-                                resultSet.getString("Payee"),
-                                resultSet.getString("AccountMid")
-                        ));
 
-    }
+       return namedParameterJdbcTemplate.queryForObject(sql,
+               new MapSqlParameterSource().
+                       addValue("productType", productType).addValue("accountMid", accountMid),
+               new BeanPropertyRowMapper<>(RegularIncomePaymentDetails.class));
+
+       }
 
 
     public IncomeLevel getAccountIncomeLevel(int productType) {
@@ -106,9 +101,10 @@ public class AccountComponent {
     }
 
     public PreservationDetails getAccountPreservationDetails(int productType ,String accountMid) {
+
         String sql = " SELECT NVL(a.component_type,'X') AS componentType," +
-                " ROUND(NVL(bpr.restricted_amount,0),2) AS restrictedAmount," +
-                " ROUND(NVL(bpr.unrestricted_amount,0),2) AS unrestrictedAmount," +
+                " ROUND(NVL(bpr.restricted_amount,0),2) AS restrictedNonPreserved," +
+                " ROUND(NVL(bpr.unrestricted_amount,0),2) AS unrestrictedNonPreserved," +
                 " ROUND(NVL(bpr.tax_free_amt,0),2) AS taxFreeAmount," +
                 "TRIM(NVL(bpr.release_condition_yn,'N')) AS releaseConditionYn," +
                 "TRIM(NVL(bpr.full_tax_free_yn,'N')) AS fullTaxFreeYn," +
@@ -119,7 +115,7 @@ public class AccountComponent {
                 " FROM balance_preservation bpr,account_source a" +
                 " WHERE a.ACCOUNT_MID = :accountMid" +
                 " AND   a.account_mid = bpr.account_mid" +
-                " AND nvl(bpr.effective_date,'01-JAN-1900') = (select nvl(max(effective_date),'01-JAN-1900') from balance_preservation WHERE account_mid =:accountMid)" +
+                " AND nvl(bpr.effective_date,'01-JAN-1900') = (select nvl(max(effective_date),'01-JAN-1900') from balance_preservation WHERE account_mid = :accountMid)" +
                 " And ROWNUM = 1";
 
         return namedParameterJdbcTemplate.queryForObject(sql,

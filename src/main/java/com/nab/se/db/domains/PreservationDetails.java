@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PreservationDetails {
     private String componentType;
-    private String restrictedAmount;
-    private String unrestrictedAmount;
+    private String restrictedNonPreserved;
+    private String unrestrictedNonPreserved;
     private String taxFreeAmount;
     private String releaseConditionYn;
     private String fullTaxFreeYn;
