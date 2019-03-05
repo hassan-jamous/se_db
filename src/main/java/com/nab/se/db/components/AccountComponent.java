@@ -2,8 +2,10 @@ package com.nab.se.db.components;
 
 import com.nab.se.db.domains.FundStrategy;
 import com.nab.se.db.domains.IncomeLevel;
+import com.nab.se.db.domains.FullNameInvestor;
 import com.nab.se.db.domains.RegularIncomePaymentDetails;
 import com.nab.se.db.domains.PreservationDetails;
+import com.nab.se.db.domains.AddressInvestor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -43,7 +45,7 @@ public class AccountComponent {
     }
 
 
-   public RegularIncomePaymentDetails getRegularIncomePaymentDetails(int productType ,String accountMid) {
+    public RegularIncomePaymentDetails getRegularIncomePaymentDetails(int productType, String accountMid) {
         String sql = " SELECT acst.total_amount AS Amount," +
                 " unl.domain_value AS Frequency," +
                 " TO_CHAR(acst.start_date , 'YYYY-MM-DD') AS NextPaymentDate," +
@@ -105,7 +107,49 @@ public class AccountComponent {
 
     }
 
-    public PreservationDetails getAccountPreservationDetails(int productType ,String accountMid) {
+    public FullNameInvestor getFullNameInvestor(int productType){
+        int randomRow = new Random().nextInt(298) + 1;
+        String sql = "select * from (" +
+                "SELECT acm.customer_number AS customerNumber," +
+                " acm.account_mid AS accountToken," +
+                " acm.given_name AS givenName," +
+                " acm.surname AS surname," +
+                " ps.party_mid AS partyMid," +
+                " rownum as r" +
+                " FROM advisor_client_mview acm" +
+                " JOIN party_source ps" +
+                " ON ps.party_fid=acm.customer_number" +
+                " JOIN individual id" +
+                " ON id.party_mid=ps.party_mid" +
+                " AND ROWNUM < 300)" +
+                " where r = " + randomRow;
+
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sql,
+                    new MapSqlParameterSource().addValue("productType", productType),
+                    new BeanPropertyRowMapper<>(FullNameInvestor.class));
+        } catch (Exception e) {
+            return new FullNameInvestor();
+        }
+    }
+
+    public AddressInvestor getAddressInvestor(String partyMid){
+        String sql = "SELECT ad.address_1 as addressLine1," +
+                " ad.address_2 as addressLine2," +
+                " ad.address_3 as addressLine3," +
+                " ad.suburb," +
+                " ad.post_code as postCode" +
+                " FROM address ad" +
+                " WHERE ad.party_mid = :partyMid";
+
+        return namedParameterJdbcTemplate.queryForObject(sql,
+                new MapSqlParameterSource().addValue("partyMid", partyMid),
+                new BeanPropertyRowMapper<>(AddressInvestor.class));
+
+    }
+
+
+    public PreservationDetails getAccountPreservationDetails(int productType, String accountMid) {
         String sql = " SELECT NVL(a.component_type,'X') AS componentType," +
                 " ROUND(NVL(bpr.restricted_amount,0),2) AS restrictedAmount," +
                 " ROUND(NVL(bpr.unrestricted_amount,0),2) AS unrestrictedAmount," +

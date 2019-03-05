@@ -4,6 +4,8 @@ import com.nab.se.db.components.FunctionExample;
 import com.nab.se.db.components.requestValidators.AccountRequestValidator;
 import com.nab.se.db.domains.*;
 import com.nab.se.db.services.AccountService;
+import com.nab.se.db.services.InvestorService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class AccountsController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private InvestorService investorService;
 
     @Autowired
     AccountRequestValidator accountRequestValidator;
@@ -63,6 +68,28 @@ public class AccountsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/fullNameInvestor")
+    public ResponseEntity<FullNameInvestor> getFullNameInvestor(final AccountRequest accountRequest) throws Exception {
+
+        log.info(accountRequest.toString());
+        FullNameInvestor response = investorService.getFullNameInvestor(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{partyMid}/DateOfBirth")
+    public ResponseEntity<String> getDateOfBirth(@PathVariable("partyMid") int partyMid) throws Exception {
+
+        String response = investorService.getDateOfBirth(partyMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{partyMid}/addressInvestor")
+    public ResponseEntity<AddressInvestor> getAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
+
+        AddressInvestor response = investorService.getAddressInvestor(partyMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/mapping")
     public ResponseEntity<MappingTest> getMapping(final AccountRequest accountRequest) {
         MappingTest response = accountService.getMapping(accountRequest.getProductType());
@@ -74,14 +101,6 @@ public class AccountsController {
     public ResponseEntity<Double> getAccountPremium(@PathVariable("accountMid") String accountMid) throws Exception{
         return new ResponseEntity<>(this.functionExample.getAccountBalance(accountMid), HttpStatus.OK);
     }
-
-//    @GetMapping("/response/errpr")
-//    public ResponseEntity<String> getFucked() throws Exception {
-//        if (true) {
-//            throw new Exception("FUCKING DICK FUCK");
-//        }
-//        return new ResponseEntity<>("GET FUCKED", HttpStatus.OK);
-//    }
 
 }
 
