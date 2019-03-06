@@ -4,8 +4,6 @@ import com.nab.se.db.components.FunctionExample;
 import com.nab.se.db.components.requestValidators.AccountRequestValidator;
 import com.nab.se.db.domains.*;
 import com.nab.se.db.services.AccountService;
-import com.nab.se.db.services.InvestorService;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,9 +22,6 @@ public class AccountsController {
 
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private InvestorService investorService;
 
     @Autowired
     AccountRequestValidator accountRequestValidator;
@@ -65,48 +60,6 @@ public class AccountsController {
 
         log.info(accountRequest.toString());
         Combination response = accountService.getCombination(accountRequest.getProductType());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/personalDetails")
-    public ResponseEntity<PersonalDetails> getPersonalDetails(final AccountRequest accountRequest) throws Exception {
-
-        PersonalDetails response = investorService.getPersonalDetails(accountRequest.getProductType());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/fullNameInvestor")
-    public ResponseEntity<FullNameInvestor> getFullNameInvestor(final AccountRequest accountRequest) throws Exception {
-
-        log.info(accountRequest.toString());
-        FullNameInvestor response = investorService.getFullNameInvestor(accountRequest.getProductType());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{partyMid}/personalContactInformation")
-    public ResponseEntity<PersonalContactInformation> getPersonalContactInformation(@PathVariable("partyMid") String partyMid) throws Exception {
-
-        PersonalContactInformation response = investorService.getPersonalContactInformation(partyMid);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{partyMid}/businessPhoneNumber")
-    public ResponseEntity<BusinessPhoneNumber> getBusinessPhoneNumber(@PathVariable("partyMid") String partyMid) throws Exception {
-
-        BusinessPhoneNumber response = investorService.getBusinessPhoneNumber(partyMid);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{partyMid}/addressInvestor")
-    public ResponseEntity<AddressInvestor> getAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
-
-        AddressInvestor response = investorService.getAddressInvestor(partyMid);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    @GetMapping(value = "/{partyMid}/postalAddressInvestor")
-    public ResponseEntity<PostalAddressInvestor> getPostalAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
-
-        PostalAddressInvestor response = investorService.getPostalAddressInvestor(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
