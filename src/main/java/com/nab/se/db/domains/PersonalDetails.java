@@ -15,4 +15,6 @@ public class PersonalDetails {
     private FullNameInvestor fullNameInvestor;
     private PersonalContactInformation personalContactInformation;
     private BusinessPhoneNumber BusinessContactInformation;
+    private AddressInvestor addressInvestor;
+    private PostalAddressInvestor postalAddressInvestor;
 }

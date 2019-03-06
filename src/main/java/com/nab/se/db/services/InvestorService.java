@@ -33,18 +33,25 @@ public class InvestorService {
         return accountComponent.getBusinessPhoneNumber((partyMid));
     }
 
-    public AddressInvestor getAddressInvestor(String partyMid){
+    public AddressInvestor getAddressInvestor(String partyMid) {
 
         return accountComponent.getAddressInvestor(partyMid);
+    }
+
+    public PostalAddressInvestor getPostalAddressInvestor(String partyMid) {
+
+        return accountComponent.getPostalAddressInvestor(partyMid);
     }
 
     public PersonalDetails getPersonalDetails(String productType) throws Exception {
 
         FullNameInvestor fni = accountComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
-        PersonalContactInformation pci= accountComponent.getPersonalContactInformation(fni.getPartyMid());
-        BusinessPhoneNumber bpn= accountComponent.getBusinessPhoneNumber(fni.getPartyMid());
+        PersonalContactInformation pci = accountComponent.getPersonalContactInformation(fni.getPartyMid());
+        BusinessPhoneNumber bpn = accountComponent.getBusinessPhoneNumber(fni.getPartyMid());
+        AddressInvestor ai = accountComponent.getAddressInvestor(fni.getPartyMid());
+        PostalAddressInvestor pai = accountComponent.getPostalAddressInvestor(fni.getPartyMid());
 
-        PersonalDetails personalDetails = new PersonalDetails(fni, pci, bpn);
+        PersonalDetails personalDetails = new PersonalDetails(fni, pci, bpn, ai, pai);
         return personalDetails;
     }
 

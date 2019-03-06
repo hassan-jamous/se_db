@@ -103,6 +103,12 @@ public class AccountsController {
         AddressInvestor response = investorService.getAddressInvestor(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @GetMapping(value = "/{partyMid}/postalAddressInvestor")
+    public ResponseEntity<PostalAddressInvestor> getPostalAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
+
+        PostalAddressInvestor response = investorService.getPostalAddressInvestor(partyMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @GetMapping(value = "/mapping")
     public ResponseEntity<MappingTest> getMapping(final AccountRequest accountRequest) {

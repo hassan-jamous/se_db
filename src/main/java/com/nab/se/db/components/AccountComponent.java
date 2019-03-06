@@ -3,6 +3,7 @@ package com.nab.se.db.components;
 import com.nab.se.db.domains.FundStrategy;
 import com.nab.se.db.domains.PersonalContactInformation;
 import com.nab.se.db.domains.BusinessPhoneNumber;
+import com.nab.se.db.domains.PostalAddressInvestor;
 import com.nab.se.db.domains.IncomeLevel;
 import com.nab.se.db.domains.FullNameInvestor;
 import com.nab.se.db.domains.RegularIncomePaymentDetails;
@@ -185,11 +186,34 @@ public class AccountComponent {
                 " ad.suburb," +
                 " ad.post_code as postCode" +
                 " FROM address ad" +
-                " WHERE ad.party_mid = :partyMid";
+                " WHERE ad.party_mid = :partyMid" +
+                " AND address_type_lid=2";
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sql,
+                    new MapSqlParameterSource().addValue("partyMid", partyMid),
+                    new BeanPropertyRowMapper<>(AddressInvestor.class));
+        } catch (Exception e) {
+            return new AddressInvestor();
+        }
 
-        return namedParameterJdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource().addValue("partyMid", partyMid),
-                new BeanPropertyRowMapper<>(AddressInvestor.class));
+    }
+
+    public PostalAddressInvestor getPostalAddressInvestor(String partyMid) {
+        String sql = "SELECT ad.address_1 as addressLine1," +
+                " ad.address_2 as addressLine2," +
+                " ad.address_3 as addressLine3," +
+                " ad.suburb," +
+                " ad.post_code as postCode" +
+                " FROM address ad" +
+                " WHERE ad.party_mid = :partyMid" +
+                " AND address_type_lid=1";
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sql,
+                    new MapSqlParameterSource().addValue("partyMid", partyMid),
+                    new BeanPropertyRowMapper<>(PostalAddressInvestor.class));
+        } catch (Exception e) {
+            return new PostalAddressInvestor();
+        }
 
     }
 
