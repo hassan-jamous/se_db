@@ -97,13 +97,6 @@ public class AccountsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{partyMid}/DateOfBirth")
-    public ResponseEntity<String> getDateOfBirth(@PathVariable("partyMid") int partyMid) throws Exception {
-
-        String response = investorService.getDateOfBirth(partyMid);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @GetMapping(value = "/{partyMid}/addressInvestor")
     public ResponseEntity<AddressInvestor> getAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
 
