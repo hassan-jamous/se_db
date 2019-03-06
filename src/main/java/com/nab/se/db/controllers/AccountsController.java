@@ -68,11 +68,32 @@ public class AccountsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/personalDetails")
+    public ResponseEntity<PersonalDetails> getPersonalDetails(final AccountRequest accountRequest) throws Exception {
+
+        PersonalDetails response = investorService.getPersonalDetails(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/fullNameInvestor")
     public ResponseEntity<FullNameInvestor> getFullNameInvestor(final AccountRequest accountRequest) throws Exception {
 
         log.info(accountRequest.toString());
         FullNameInvestor response = investorService.getFullNameInvestor(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{partyMid}/personalContactInformation")
+    public ResponseEntity<PersonalContactInformation> getPersonalContactInformation(@PathVariable("partyMid") String partyMid) throws Exception {
+
+        PersonalContactInformation response = investorService.getPersonalContactInformation(partyMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{partyMid}/businessPhoneNumber")
+    public ResponseEntity<BusinessPhoneNumber> getBusinessPhoneNumber(@PathVariable("partyMid") String partyMid) throws Exception {
+
+        BusinessPhoneNumber response = investorService.getBusinessPhoneNumber(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -10,8 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FullNameInvestor {
+    private String customerNumber;
     private String givenName;
     private String surname;
     private String partyMid;
     private String accountToken;
+    private String dateOfBirth;
 }
