@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressInvestor {
+public class PostalAddress {
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;

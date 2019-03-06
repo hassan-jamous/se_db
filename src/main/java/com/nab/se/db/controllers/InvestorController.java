@@ -50,16 +50,16 @@ public class InvestorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{partyMid}/addressInvestor")
-    public ResponseEntity<AddressInvestor> getAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
+    @GetMapping(value = "/{partyMid}/address")
+    public ResponseEntity<Address> getAddress(@PathVariable("partyMid") String partyMid) throws Exception {
 
-        AddressInvestor response = investorService.getAddressInvestor(partyMid);
+        Address response = investorService.getAddress(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @GetMapping(value = "/{partyMid}/postalAddressInvestor")
-    public ResponseEntity<PostalAddressInvestor> getPostalAddressInvestor(@PathVariable("partyMid") String partyMid) throws Exception {
+    @GetMapping(value = "/{partyMid}/postalAddress")
+    public ResponseEntity<PostalAddress> getPostalAddress(@PathVariable("partyMid") String partyMid) throws Exception {
 
-        PostalAddressInvestor response = investorService.getPostalAddressInvestor(partyMid);
+        PostalAddress response = investorService.getPostalAddress(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

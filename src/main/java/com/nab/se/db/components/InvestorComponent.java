@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Random;
 
 @Repository
@@ -85,7 +84,7 @@ public class InvestorComponent {
     }
 
 
-    public AddressInvestor getAddressInvestor(String partyMid) {
+    public Address getAddress(String partyMid) {
         String sql = "SELECT ad.address_1 as addressLine1," +
                 " ad.address_2 as addressLine2," +
                 " ad.address_3 as addressLine3," +
@@ -97,14 +96,14 @@ public class InvestorComponent {
         try {
             return namedParameterJdbcTemplate.queryForObject(sql,
                     new MapSqlParameterSource().addValue("partyMid", partyMid),
-                    new BeanPropertyRowMapper<>(AddressInvestor.class));
+                    new BeanPropertyRowMapper<>(Address.class));
         } catch (Exception e) {
-            return new AddressInvestor();
+            return new Address();
         }
 
     }
 
-    public PostalAddressInvestor getPostalAddressInvestor(String partyMid) {
+    public PostalAddress getPostalAddress(String partyMid) {
         String sql = "SELECT ad.address_1 as addressLine1," +
                 " ad.address_2 as addressLine2," +
                 " ad.address_3 as addressLine3," +
@@ -116,9 +115,9 @@ public class InvestorComponent {
         try {
             return namedParameterJdbcTemplate.queryForObject(sql,
                     new MapSqlParameterSource().addValue("partyMid", partyMid),
-                    new BeanPropertyRowMapper<>(PostalAddressInvestor.class));
+                    new BeanPropertyRowMapper<>(PostalAddress.class));
         } catch (Exception e) {
-            return new PostalAddressInvestor();
+            return new PostalAddress();
         }
 
     }

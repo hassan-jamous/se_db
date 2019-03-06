@@ -6,8 +6,6 @@ import com.nab.se.db.domains.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class InvestorService {
 
@@ -33,14 +31,14 @@ public class InvestorService {
         return investorComponent.getBusinessPhoneNumber((partyMid));
     }
 
-    public AddressInvestor getAddressInvestor(String partyMid) {
+    public Address getAddress(String partyMid) {
 
-        return investorComponent.getAddressInvestor(partyMid);
+        return investorComponent.getAddress(partyMid);
     }
 
-    public PostalAddressInvestor getPostalAddressInvestor(String partyMid) {
+    public PostalAddress getPostalAddress(String partyMid) {
 
-        return investorComponent.getPostalAddressInvestor(partyMid);
+        return investorComponent.getPostalAddress(partyMid);
     }
 
     public PersonalDetails getPersonalDetails(String productType) throws Exception {
@@ -48,8 +46,8 @@ public class InvestorService {
         FullNameInvestor fni = investorComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
         PersonalContactInformation pci = investorComponent.getPersonalContactInformation(fni.getPartyMid());
         BusinessPhoneNumber bpn = investorComponent.getBusinessPhoneNumber(fni.getPartyMid());
-        AddressInvestor ai = investorComponent.getAddressInvestor(fni.getPartyMid());
-        PostalAddressInvestor pai = investorComponent.getPostalAddressInvestor(fni.getPartyMid());
+        Address ai = investorComponent.getAddress(fni.getPartyMid());
+        PostalAddress pai = investorComponent.getPostalAddress(fni.getPartyMid());
 
         PersonalDetails personalDetails = new PersonalDetails(fni, pci, bpn, ai, pai);
         return personalDetails;

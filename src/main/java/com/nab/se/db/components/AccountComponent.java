@@ -1,14 +1,9 @@
 package com.nab.se.db.components;
 
 import com.nab.se.db.domains.FundStrategy;
-import com.nab.se.db.domains.PersonalContactInformation;
-import com.nab.se.db.domains.BusinessPhoneNumber;
-import com.nab.se.db.domains.PostalAddressInvestor;
 import com.nab.se.db.domains.IncomeLevel;
-import com.nab.se.db.domains.FullNameInvestor;
 import com.nab.se.db.domains.RegularIncomePaymentDetails;
 import com.nab.se.db.domains.PreservationDetails;
-import com.nab.se.db.domains.AddressInvestor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +13,6 @@ public class PersonalDetails {
     private FullNameInvestor fullNameInvestor;
     private PersonalContactInformation personalContactInformation;
     private BusinessPhoneNumber BusinessContactInformation;
-    private AddressInvestor addressInvestor;
-    private PostalAddressInvestor postalAddressInvestor;
+    private Address address;
+    private PostalAddress postalAddress;
 }
