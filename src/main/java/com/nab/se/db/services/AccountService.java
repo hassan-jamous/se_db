@@ -53,16 +53,6 @@ public class AccountService {
         return combination;
     }
 
-    public FullNameInvestor getFullNameInvestor(String productType) throws Exception {
-
-        return accountComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
-    }
-
-    public AddressInvestor getAddressInvestor(String partyMid){
-
-        return accountComponent.getAddressInvestor(partyMid);
-    }
-
     public MappingTest getMapping(String productType) {
         IncomeLevel il = accountComponent.getAccountIncomeLevel(this.productTypeConverter.convertProduct(productType));
         MappingTest mappingTest = new MappingTest();
