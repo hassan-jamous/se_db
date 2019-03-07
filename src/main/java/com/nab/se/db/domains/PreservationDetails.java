@@ -1,18 +1,16 @@
 package com.nab.se.db.domains;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class PreservationDetails {
     private String componentType;
-    private String restrictedAmount;
-    private String unrestrictedAmount;
+    private String restrictedNonPreserved;
+    private String unrestrictedNonPreserved;
     private String taxFreeAmount;
     private String releaseConditionYn;
     private String fullTaxFreeYn;

@@ -39,6 +39,7 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.10"
     compile files('lib/ojdbc7-12.1.0.1.jar')
     compile "org.apache.tomcat:tomcat-jdbc"
+    compile "org.aspectj:aspectjweaver:1.9.2"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class FundStrategy {
+public class FutureInvestmentStrategy {
     private String fundName;
-    private String drawDown;
+    private Float percentage;
 }

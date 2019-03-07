@@ -14,6 +14,19 @@ public class ProductTypeConverter {
             return 39;
         }
 
+        else  if(productType.equals("MKSF")) {
+            return 35;
+        }
+
+        else  if(productType.equals("MKS")) {
+            return 36;
+        }
+
+        else if ((productType.equals("MKBS") || productType.equals("MKPS"))) {
+            return 11;
+        }
+
+
         else {
             throw new InvalidProductTypeException();
         }

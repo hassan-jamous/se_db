@@ -1,12 +1,14 @@
 package com.nab.se.db.domains;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegularIncomePaymentDetails {
     private String amount;
     private String frequency;

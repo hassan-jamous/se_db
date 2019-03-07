@@ -13,10 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Combination {
-    private IncomeLevel incomeLevel;
-    private RegularIncomePaymentDetails regIncomePayment;
-    private PreservationDetails preservationDetails;
-    private List<FundStrategy> fundStrategies;
-    private Double accountBalance;
+public class AccountStrategiesDetails {
+    private List<FutureInvestmentStrategy> futureStrategy;
+    private List<DrawdownStrategy> drawDownStrategy;
+    private CustomerInformation customerInformation;
+
 }
