@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class FundStrategy {
+public class DrawdownStrategy {
     private String fundName;
-    private String drawDown;
+    private Integer sequence;
 }

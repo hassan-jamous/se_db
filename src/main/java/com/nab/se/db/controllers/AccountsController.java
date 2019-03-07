@@ -49,7 +49,7 @@ public class AccountsController {
     }
 
     @GetMapping(value = "/{accountMid}/fundStrategy")
-    public ResponseEntity<List<FundStrategy>> getAccountPreservationDetails(@PathVariable("accountMid") String accountMid) {
+    public ResponseEntity<List<FundStrategy>> getFundStrategy(@PathVariable("accountMid") String accountMid) {
         //this.accountRequestValidator.validateGetAccountPreservationDetails(accountRequest);
         List<FundStrategy> response = accountService.getFundStrategy(accountMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -75,14 +75,67 @@ public class AccountsController {
     public ResponseEntity<Double> getAccountPremium(@PathVariable("accountMid") String accountMid) throws Exception{
         return new ResponseEntity<>(this.functionExample.getAccountBalance(accountMid), HttpStatus.OK);
     }
+//
+    @GetMapping(value = "/{accountMid}/beneficiaryDetails")
+    public ResponseEntity<List<BeneficiaryDetails>> getAccountBeneficiaryDetails(@PathVariable("accountMid") String accountMid) {
+        List<BeneficiaryDetails> response = accountService.getAccountBeneficiaryDetails(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    @GetMapping("/response/errpr")
-//    public ResponseEntity<String> getFucked() throws Exception {
-//        if (true) {
-//            throw new Exception("FUCKING DICK FUCK");
-//        }
-//        return new ResponseEntity<>("GET FUCKED", HttpStatus.OK);
-//    }
+    @GetMapping(value = "/{productType}/accountMid")
+
+    public ResponseEntity<CustomerInformation> getCustomerInformation(final AccountRequest accountRequest) {
+        CustomerInformation response = accountService.getCustomerInformation(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/adviserDetails")
+    public ResponseEntity<List<AdviserDetails>> getAccountAdviserDetails(@PathVariable("accountMid") String accountMid) {
+        List<AdviserDetails> response = accountService.getAccountAdviserDetails(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/authRepDetails")
+    public ResponseEntity<List<AuthRepDetails>> getAuthRepDetails(@PathVariable("accountMid") String accountMid) {
+        List<AuthRepDetails> response = accountService.getAuthRepDetails(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/accountParties")
+    public ResponseEntity<AccountPartiesDetails> getAccountParties(final AccountRequest accountRequest) throws Exception {
+
+        log.info(accountRequest.toString());
+        AccountPartiesDetails response = accountService.getAccountParties(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/futureInvestmentStrategy")
+    public ResponseEntity<List<FutureInvestmentStrategy>> getFutureInvestmentStrategy (@PathVariable("accountMid") String accountMid) {
+        List<FutureInvestmentStrategy> response = accountService.getFutureInvestmentStrategy(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/drawdownStrategy")
+    public ResponseEntity<List<DrawdownStrategy>> getDrawdownStrategy (@PathVariable("accountMid") String accountMid) {
+        List<DrawdownStrategy> response = accountService.getDrawdownStrategy(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/accountStrategies")
+    public ResponseEntity<AccountStrategiesDetails> getAccountStrategiesDetails(final AccountRequest accountRequest) throws Exception {
+
+        log.info(accountRequest.toString());
+        AccountStrategiesDetails response = accountService.getAccountStrategiesDetails(accountRequest.getProductType());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+
 
 }
 
