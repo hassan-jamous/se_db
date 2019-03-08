@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Random;
 
 @Repository
@@ -84,41 +85,46 @@ public class InvestorComponent {
     }
 
 
-    public Address getAddress(String partyMid) {
+    public List<Addresses> getAddresses(String partyMid) {
         String sql = "SELECT ad.address_1 as addressLine1," +
                 " ad.address_2 as addressLine2," +
                 " ad.address_3 as addressLine3," +
-                " ad.suburb," +
-                " ad.post_code as postCode" +
+                " ad.suburb as suburb," +
+                " ad.post_code as postCode," +
+                " ad.state as state," +
+                " ad.country_code as country," +
+                " adl.domain_value as usageType" +
                 " FROM address ad" +
-                " WHERE ad.party_mid = :partyMid" +
-                " AND address_type_lid=2";
-        try {
-            return namedParameterJdbcTemplate.queryForObject(sql,
+                " join unl_domain_value adl" +
+                " on adl.DOMAIN_LID = ad.address_type_lid" +
+                " and adl.domain_name ='ADDRESS_TYPE'" +
+                " WHERE ad.party_mid = :partyMid";
+            return namedParameterJdbcTemplate.query(sql,
                     new MapSqlParameterSource().addValue("partyMid", partyMid),
-                    new BeanPropertyRowMapper<>(Address.class));
-        } catch (Exception e) {
-            return new Address();
-        }
+                    new BeanPropertyRowMapper<>(Addresses.class));
+
 
     }
 
-    public PostalAddress getPostalAddress(String partyMid) {
-        String sql = "SELECT ad.address_1 as addressLine1," +
-                " ad.address_2 as addressLine2," +
-                " ad.address_3 as addressLine3," +
-                " ad.suburb," +
-                " ad.post_code as postCode" +
-                " FROM address ad" +
-                " WHERE ad.party_mid = :partyMid" +
-                " AND address_type_lid=1";
-        try {
-            return namedParameterJdbcTemplate.queryForObject(sql,
-                    new MapSqlParameterSource().addValue("partyMid", partyMid),
-                    new BeanPropertyRowMapper<>(PostalAddress.class));
-        } catch (Exception e) {
-            return new PostalAddress();
-        }
+    public List<FundStrategy> getFundStrategy(String acountMid) {
+        String sql = " SELECT invt.investment_dsp_name fundName," +
+                " DECODE(NVL(acis.draw_down_sequence,0) , 0 , acis.percentage || ' %' ," +
+                " acis.draw_down_sequence) drawDown" +
+                " FROM account_strategy acst," +
+                " account_invest_strategy acis," +
+                " investment_unit_type invt" +
+                " WHERE acst.account_mid = :accountMid" +
+                " AND acst.account_strategy_lid IN (20,21)" +
+                " AND acst.account_strategy_mid = acis.account_strategy_mid" +
+                " AND acst.expire_yn = 'N'" +
+                " AND acis.expire_yn = 'N'" +
+                " AND acis.investment_mid = invt.investment_mid" +
+                " AND invt.unit_type_lid  = 0" +
+                " ORDER BY acis.draw_down_sequence ASC, acis.percentage DESC, invt.investment_dsp_name ASC ";
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("accountMid" , acountMid),
+                new BeanPropertyRowMapper<>(FundStrategy.class));
 
     }
 

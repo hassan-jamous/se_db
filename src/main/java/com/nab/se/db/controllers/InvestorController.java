@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+
 
 @Slf4j
 @RestController
@@ -50,16 +53,10 @@ public class InvestorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{partyMid}/address")
-    public ResponseEntity<Address> getAddress(@PathVariable("partyMid") String partyMid) throws Exception {
+    @GetMapping(value = "/{partyMid}/addresses")
+    public ResponseEntity<List<Addresses>>getAddresses(@PathVariable("partyMid") String partyMid) throws Exception {
 
-        Address response = investorService.getAddress(partyMid);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    @GetMapping(value = "/{partyMid}/postalAddress")
-    public ResponseEntity<PostalAddress> getPostalAddress(@PathVariable("partyMid") String partyMid) throws Exception {
-
-        PostalAddress response = investorService.getPostalAddress(partyMid);
+        List<Addresses> response = investorService.getAddresses(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
