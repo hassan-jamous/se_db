@@ -9,8 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonalContactInformation {
-    private String homeNumber;
-    private String email;
+public class Person {
+ private String dateOfBirth;
+ private String firstName;
+ private String gender;
+ private String lastName;
+ private String title;
 
 }

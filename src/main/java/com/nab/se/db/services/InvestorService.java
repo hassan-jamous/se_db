@@ -23,9 +23,9 @@ public class InvestorService {
         return investorComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
     }
 
-    public PersonalContactInformation getPersonalContactInformation(String partyMid) {
+    public Person getPerson(String partyMid) {
 
-        return investorComponent.getPersonalContactInformation((partyMid));
+        return investorComponent.getPerson((partyMid));
     }
 
     public BusinessPhoneNumber getBusinessPhoneNumber(String partyMid) {
@@ -38,14 +38,20 @@ public class InvestorService {
         return investorComponent.getAddresses(partyMid);
     }
 
+    public List<Email> getEmail(String partyMid) {
+
+        return investorComponent.getEmail(partyMid);
+    }
+
     public PersonalDetails getPersonalDetails(String productType) throws Exception {
 
         FullNameInvestor fni = investorComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
-        PersonalContactInformation pci = investorComponent.getPersonalContactInformation(fni.getPartyMid());
+        Person pci = investorComponent.getPerson(fni.getPartyMid());
         BusinessPhoneNumber bpn = investorComponent.getBusinessPhoneNumber(fni.getPartyMid());
         List<Addresses> ai = investorComponent.getAddresses(fni.getPartyMid());
+        List<Email> em = investorComponent.getEmail(fni.getPartyMid());
 
-        PersonalDetails personalDetails = new PersonalDetails(fni, pci, bpn, ai);
+        PersonalDetails personalDetails = new PersonalDetails(fni, pci, bpn, ai, em);
         return personalDetails;
     }
 

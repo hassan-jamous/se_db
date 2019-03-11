@@ -16,7 +16,8 @@ import java.util.List;
 
 public class PersonalDetails {
     private FullNameInvestor fullNameInvestor;
-    private PersonalContactInformation personalContactInformation;
+    private Person person;
     private BusinessPhoneNumber BusinessContactInformation;
     private List<Addresses> addresses;
+    private List<Email> email;
 }

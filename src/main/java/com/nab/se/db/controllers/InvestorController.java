@@ -39,10 +39,17 @@ public class InvestorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{partyMid}/personalContactInformation")
-    public ResponseEntity<PersonalContactInformation> getPersonalContactInformation(@PathVariable("partyMid") String partyMid) throws Exception {
+    @GetMapping(value = "{partyMid}/email")
+    public ResponseEntity<List<Email>> getEmail(@PathVariable("partyMid") String partyMid) throws Exception {
 
-        PersonalContactInformation response = investorService.getPersonalContactInformation(partyMid);
+        List<Email> response = investorService.getEmail(partyMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{partyMid}/person")
+    public ResponseEntity<Person> getPerson(@PathVariable("partyMid") String partyMid) throws Exception {
+
+        Person response = investorService.getPerson(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -54,7 +61,7 @@ public class InvestorController {
     }
 
     @GetMapping(value = "/{partyMid}/addresses")
-    public ResponseEntity<List<Addresses>>getAddresses(@PathVariable("partyMid") String partyMid) throws Exception {
+    public ResponseEntity<List<Addresses>> getAddresses(@PathVariable("partyMid") String partyMid) throws Exception {
 
         List<Addresses> response = investorService.getAddresses(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);

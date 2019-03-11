@@ -47,22 +47,41 @@ public class InvestorComponent {
         }
     }
 
-    public PersonalContactInformation getPersonalContactInformation(String partyMid) {
+    public Person getPerson(String partyMid) {
 
         String sql =
-                " SELECT c.phone_number AS homeNumber," +
-                        " c.e_mail AS email" +
-                        " FROM contact c" +
-                        " JOIN unl_domain_value udv" +
-                        " ON udv.domain_lid = c.contact_type_lid" +
-                        " AND domain_name = 'CONTACT_TYPE'" +
-                        " AND c.CONTACT_TYPE_LID=1" +
-                        " WHERE party_mid = :partyMid";
+          "select i.SALUTATION as title," +
+          " TO_CHAR(i.date_of_birth, 'YYYY-MM-DD') AS dateOfBirth," +
+          " i.GIVEN_NAME as firstName," +
+          " i.surname as lastName," +
+          " adl.domain_value as gender" +
+          " from individual i" +
+          " join unl_domain_value adl on adl.DOMAIN_LID = i.sex_code_lid" +
+          " and adl.domain_name = 'SEX'" +
+          " WHERE party_mid = :partyMid";
 
         return namedParameterJdbcTemplate.queryForObject(sql,
                 new MapSqlParameterSource().addValue("partyMid", partyMid),
-                new BeanPropertyRowMapper<>(PersonalContactInformation.class));
+                new BeanPropertyRowMapper<>(Person.class));
     }
+
+    //fixme
+//    public Phone getPhone(String partyMid) {
+//
+//        String sql =
+//                " SELECT c.phone_number AS homeNumber," +
+//                        " c.e_mail AS email" +
+//                        " FROM contact c" +
+//                        " JOIN unl_domain_value udv" +
+//                        " ON udv.domain_lid = c.contact_type_lid" +
+//                        " AND domain_name = 'CONTACT_TYPE'" +
+//                        " AND c.CONTACT_TYPE_LID=1" +
+//                        " WHERE party_mid = :partyMid";
+//
+//        return namedParameterJdbcTemplate.queryForObject(sql,
+//                new MapSqlParameterSource().addValue("partyMid", partyMid),
+//                new BeanPropertyRowMapper<>(Phone.class));
+//    }
 
     public BusinessPhoneNumber getBusinessPhoneNumber(String partyMid) {
 
@@ -99,9 +118,25 @@ public class InvestorComponent {
                 " on adl.DOMAIN_LID = ad.address_type_lid" +
                 " and adl.domain_name ='ADDRESS_TYPE'" +
                 " WHERE ad.party_mid = :partyMid";
-            return namedParameterJdbcTemplate.query(sql,
-                    new MapSqlParameterSource().addValue("partyMid", partyMid),
-                    new BeanPropertyRowMapper<>(Addresses.class));
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("partyMid", partyMid),
+                new BeanPropertyRowMapper<>(Addresses.class));
+
+
+    }
+
+    public List<Email> getEmail(String partyMid) {
+        String sql = "SELECT c.e_mail as email," +
+                "adl.domain_value as usageType" +
+                " FROM contact c" +
+                " join unl_domain_value adl" +
+                " on adl.DOMAIN_LID = c.contact_type_lid" +
+                " and adl.domain_name ='CONTACT_TYPE'" +
+                " and c.e_mail is not null" +
+                " WHERE c.party_mid = :partyMid";
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("partyMid", partyMid),
+                new BeanPropertyRowMapper<>(Email.class));
 
 
     }
@@ -123,7 +158,7 @@ public class InvestorComponent {
                 " ORDER BY acis.draw_down_sequence ASC, acis.percentage DESC, invt.investment_dsp_name ASC ";
 
         return namedParameterJdbcTemplate.query(sql,
-                new MapSqlParameterSource().addValue("accountMid" , acountMid),
+                new MapSqlParameterSource().addValue("accountMid", acountMid),
                 new BeanPropertyRowMapper<>(FundStrategy.class));
 
     }
