@@ -9,11 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FullNameInvestor {
-    private String customerNumber;
-    private String givenName;
-    private String surname;
+public class CustomerToken {
+    private String customerId;
     private String partyMid;
-    private String accountToken;
-    private String dateOfBirth;
 }

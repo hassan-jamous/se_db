@@ -12,12 +12,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 
 public class PersonalDetails {
-    private FullNameInvestor fullNameInvestor;
+    private CustomerToken customerInformation;
     private Person person;
-    private BusinessPhoneNumber BusinessContactInformation;
+    private List<Phones> phones;
     private List<Addresses> addresses;
     private List<Email> email;
 }

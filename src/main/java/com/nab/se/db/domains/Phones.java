@@ -1,5 +1,6 @@
 package com.nab.se.db.domains;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BusinessPhoneNumber {
-    private String businessPhoneNumber;
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Phones {
+    private String phoneNumber;
+    private String usageType;
 
 }

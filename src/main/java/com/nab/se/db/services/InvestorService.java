@@ -18,9 +18,9 @@ public class InvestorService {
     private ProductTypeConverter productTypeConverter;
 
 
-    public FullNameInvestor getFullNameInvestor(String productType) {
+    public CustomerToken getCustomerToken(String productType) {
 
-        return investorComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
+        return investorComponent.getCustomerToken(this.productTypeConverter.convertProduct(productType));
     }
 
     public Person getPerson(String partyMid) {
@@ -28,9 +28,10 @@ public class InvestorService {
         return investorComponent.getPerson((partyMid));
     }
 
-    public BusinessPhoneNumber getBusinessPhoneNumber(String partyMid) {
 
-        return investorComponent.getBusinessPhoneNumber((partyMid));
+    public List<Phones> getPhones(String partyMid) {
+
+        return investorComponent.getPhones((partyMid));
     }
 
     public List<Addresses> getAddresses(String partyMid) {
@@ -45,9 +46,9 @@ public class InvestorService {
 
     public PersonalDetails getPersonalDetails(String productType) throws Exception {
 
-        FullNameInvestor fni = investorComponent.getFullNameInvestor(this.productTypeConverter.convertProduct(productType));
+        CustomerToken fni = investorComponent.getCustomerToken(this.productTypeConverter.convertProduct(productType));
         Person pci = investorComponent.getPerson(fni.getPartyMid());
-        BusinessPhoneNumber bpn = investorComponent.getBusinessPhoneNumber(fni.getPartyMid());
+        List<Phones> bpn = investorComponent.getPhones(fni.getPartyMid());
         List<Addresses> ai = investorComponent.getAddresses(fni.getPartyMid());
         List<Email> em = investorComponent.getEmail(fni.getPartyMid());
 

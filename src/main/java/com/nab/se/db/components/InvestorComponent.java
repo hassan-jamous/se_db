@@ -16,17 +16,11 @@ public class InvestorComponent {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public FullNameInvestor getFullNameInvestor(int productType) {
+    public CustomerToken getCustomerToken(int productType) {
         int randomRow = new Random().nextInt(298) + 1;
         String sql = "select * from (" +
-                "SELECT acm.customer_number AS customerNumber," +
-                " acm.account_mid AS accountToken," +
-                " acm.given_name AS givenName," +
-                " acm.surname AS surname," +
+                "SELECT acm.customer_number AS customerId," +
                 " ps.party_mid AS partyMid," +
-                " cnt.phone_number AS homePhoneNumber," +
-                " cnt.e_mail AS email," +
-                " TO_CHAR(id.date_of_birth, 'YYYY-MM-DD') AS dateOfBirth," +
                 " rownum as r" +
                 " FROM advisor_client_mview acm" +
                 " JOIN party_source ps" +
@@ -41,9 +35,9 @@ public class InvestorComponent {
         try {
             return namedParameterJdbcTemplate.queryForObject(sql,
                     new MapSqlParameterSource().addValue("productType", productType),
-                    new BeanPropertyRowMapper<>(FullNameInvestor.class));
+                    new BeanPropertyRowMapper<>(CustomerToken.class));
         } catch (Exception e) {
-            return new FullNameInvestor();
+            return new CustomerToken();
         }
     }
 
@@ -65,42 +59,21 @@ public class InvestorComponent {
                 new BeanPropertyRowMapper<>(Person.class));
     }
 
-    //fixme
-//    public Phone getPhone(String partyMid) {
-//
-//        String sql =
-//                " SELECT c.phone_number AS homeNumber," +
-//                        " c.e_mail AS email" +
-//                        " FROM contact c" +
-//                        " JOIN unl_domain_value udv" +
-//                        " ON udv.domain_lid = c.contact_type_lid" +
-//                        " AND domain_name = 'CONTACT_TYPE'" +
-//                        " AND c.CONTACT_TYPE_LID=1" +
-//                        " WHERE party_mid = :partyMid";
-//
-//        return namedParameterJdbcTemplate.queryForObject(sql,
-//                new MapSqlParameterSource().addValue("partyMid", partyMid),
-//                new BeanPropertyRowMapper<>(Phone.class));
-//    }
-
-    public BusinessPhoneNumber getBusinessPhoneNumber(String partyMid) {
+    public List<Phones> getPhones(String partyMid) {
 
         String sql =
-                " SELECT c.phone_number AS businessPhoneNumber" +
+                " SELECT c.phone_number AS phoneNumber," +
+                        " udv.domain_value as usageType" +
                         " FROM contact c" +
                         " JOIN unl_domain_value udv" +
                         " ON udv.domain_lid = c.contact_type_lid" +
                         " AND domain_name = 'CONTACT_TYPE'" +
-                        " AND c.CONTACT_TYPE_LID=2" +
-                        " WHERE party_mid = :partyMid";
+                        " WHERE party_mid = :partyMid"+
+                        " AND c.phone_number is not null";
 
-        try {
-            return namedParameterJdbcTemplate.queryForObject(sql,
+        return namedParameterJdbcTemplate.query(sql,
                     new MapSqlParameterSource().addValue("partyMid", partyMid),
-                    new BeanPropertyRowMapper<>(BusinessPhoneNumber.class));
-        } catch (Exception e) {
-            return new BusinessPhoneNumber();
-        }
+                    new BeanPropertyRowMapper<>(Phones.class));
     }
 
 

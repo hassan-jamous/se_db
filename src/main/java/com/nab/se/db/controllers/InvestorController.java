@@ -31,11 +31,11 @@ public class InvestorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/fullNameInvestor")
-    public ResponseEntity<FullNameInvestor> getFullNameInvestor(final AccountRequest accountRequest) throws Exception {
+    @GetMapping(value = "/customerToken")
+    public ResponseEntity<CustomerToken> getCustomerToken(final AccountRequest accountRequest) throws Exception {
 
         log.info(accountRequest.toString());
-        FullNameInvestor response = investorService.getFullNameInvestor(accountRequest.getProductType());
+        CustomerToken response = investorService.getCustomerToken(accountRequest.getProductType());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -53,10 +53,10 @@ public class InvestorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{partyMid}/businessPhoneNumber")
-    public ResponseEntity<BusinessPhoneNumber> getBusinessPhoneNumber(@PathVariable("partyMid") String partyMid) throws Exception {
+    @GetMapping(value = "/{partyMid}/phones")
+    public ResponseEntity<List<Phones>> getPhones(@PathVariable("partyMid") String partyMid) throws Exception {
 
-        BusinessPhoneNumber response = investorService.getBusinessPhoneNumber(partyMid);
+        List<Phones> response = investorService.getPhones(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
