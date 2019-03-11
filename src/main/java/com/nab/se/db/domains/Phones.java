@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Phones {
-    private String phoneNumber;
     private String usageType;
+    private String phoneNumber;
 
 }

@@ -13,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-
 public class PersonalDetails {
-    private CustomerToken customerInformation;
+    private CustomerToken customerNumber;
     private Person person;
+    private List<Organisation> organisation;
     private List<Phones> phones;
     private List<Addresses> addresses;
     private List<Email> email;

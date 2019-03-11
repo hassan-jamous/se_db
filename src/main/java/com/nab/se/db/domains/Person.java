@@ -12,10 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Person {
- private String dateOfBirth;
  private String firstName;
- private String gender;
  private String lastName;
+ private String gender;
+ private String dateOfBirth;
  private String title;
 
 }

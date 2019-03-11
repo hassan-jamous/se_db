@@ -14,6 +14,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 
 public class Email {
-    private String email;
     private String usageType;
+    private String email;
 }

@@ -39,20 +39,26 @@ public class InvestorService {
         return investorComponent.getAddresses(partyMid);
     }
 
+    public List<Organisation> getOrganisation(String partyMid) {
+
+        return investorComponent.getOrganisation(partyMid);
+    }
+
     public List<Email> getEmail(String partyMid) {
 
         return investorComponent.getEmail(partyMid);
     }
 
-    public PersonalDetails getPersonalDetails(String productType) throws Exception {
+    public PersonalDetails getPersonalDetails(String productType) {
 
         CustomerToken fni = investorComponent.getCustomerToken(this.productTypeConverter.convertProduct(productType));
         Person pci = investorComponent.getPerson(fni.getPartyMid());
         List<Phones> bpn = investorComponent.getPhones(fni.getPartyMid());
         List<Addresses> ai = investorComponent.getAddresses(fni.getPartyMid());
         List<Email> em = investorComponent.getEmail(fni.getPartyMid());
+        List<Organisation> org = investorComponent.getOrganisation(fni.getPartyMid());
 
-        PersonalDetails personalDetails = new PersonalDetails(fni, pci, bpn, ai, em);
+        PersonalDetails personalDetails = new PersonalDetails(fni, pci, org, bpn, ai, em);
         return personalDetails;
     }
 

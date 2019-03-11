@@ -32,7 +32,7 @@ public class InvestorController {
     }
 
     @GetMapping(value = "/customerToken")
-    public ResponseEntity<CustomerToken> getCustomerToken(final AccountRequest accountRequest) throws Exception {
+    public ResponseEntity<CustomerToken> getCustomerToken(final AccountRequest accountRequest) {
 
         log.info(accountRequest.toString());
         CustomerToken response = investorService.getCustomerToken(accountRequest.getProductType());
@@ -40,30 +40,37 @@ public class InvestorController {
     }
 
     @GetMapping(value = "{partyMid}/email")
-    public ResponseEntity<List<Email>> getEmail(@PathVariable("partyMid") String partyMid) throws Exception {
+    public ResponseEntity<List<Email>> getEmail(@PathVariable("partyMid") String partyMid) {
 
         List<Email> response = investorService.getEmail(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{partyMid}/person")
-    public ResponseEntity<Person> getPerson(@PathVariable("partyMid") String partyMid) throws Exception {
+    public ResponseEntity<Person> getPerson(@PathVariable("partyMid") String partyMid) {
 
         Person response = investorService.getPerson(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{partyMid}/phones")
-    public ResponseEntity<List<Phones>> getPhones(@PathVariable("partyMid") String partyMid) throws Exception {
+    public ResponseEntity<List<Phones>> getPhones(@PathVariable("partyMid") String partyMid) {
 
         List<Phones> response = investorService.getPhones(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{partyMid}/addresses")
-    public ResponseEntity<List<Addresses>> getAddresses(@PathVariable("partyMid") String partyMid) throws Exception {
+    public ResponseEntity<List<Addresses>> getAddresses(@PathVariable("partyMid") String partyMid) {
 
         List<Addresses> response = investorService.getAddresses(partyMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{partyMid}/organisation")
+    public ResponseEntity<List<Organisation>> getOrganisation(@PathVariable("partyMid") String partyMid) {
+
+        List<Organisation> response = investorService.getOrganisation(partyMid);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

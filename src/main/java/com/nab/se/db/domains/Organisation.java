@@ -1,5 +1,6 @@
 package com.nab.se.db.domains;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerToken {
-    private String customerNumber;
-    private String partyMid;
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Organisation {
+    private String authRepresentative;
 }
