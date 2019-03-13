@@ -173,7 +173,7 @@ public class AccountComponent {
 
     @LogMe
     public IncomeLevel getAccountIncomeLevel(int productType) {
-        int randomRow = new Random().nextInt(89997) + 1;
+        int randomRow = new Random().nextInt(8999) + 1;
         String sql = "select * from (" +
                 "SELECT ap.gross_annual_income AS grossAnnIncome," +
                 " ap.min_income_level AS minIncomeLevel," +
