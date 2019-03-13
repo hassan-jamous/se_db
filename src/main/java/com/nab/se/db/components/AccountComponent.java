@@ -173,7 +173,7 @@ public class AccountComponent {
 
     @LogMe
     public IncomeLevel getAccountIncomeLevel(int productType) {
-        int randomRow = new Random().nextInt(89997) + 1;
+        int randomRow = new Random().nextInt(2000) + 1;
         String sql = "select * from (" +
                 "SELECT ap.gross_annual_income AS grossAnnIncome," +
                 " ap.min_income_level AS minIncomeLevel," +
@@ -192,7 +192,7 @@ public class AccountComponent {
                 " AND udv.domain_name = 'INCOME_STREAM_PHASE' " +
                 " AND acm.product_mid = :productType" +
                 " And acct.account_status_lid=1" +
-                " AND ROWNUM < 90000)" +
+                " AND ROWNUM < 9000)" +
                 " where r = " + randomRow;
 
         try {
@@ -320,6 +320,146 @@ public class AccountComponent {
                 new BeanPropertyRowMapper<>(DrawdownStrategy.class));
 
     }
+
+    @LogMe
+
+    public List<BankAccountDetails> getBankAccountDetails(String accountMid) {
+        String sql = "SELECT" +
+                "     pkgUtility.fnGetDomainValue( 'FACILITY',acfi.facility_attached_lid)" +
+                "                                AS usage," +
+                "     fins.financial_inst_name   AS bankName," +
+                "     fins.branch_name           AS branch," +
+                "     fins.financial_inst_code   AS bsb," +
+                "     fins.account_number        AS accountNumber," +
+                "     fins.account_name          AS accountName," +
+                "     acfi.account_mid" +
+                " FROM acct_financial_institution acfi," +
+                "    financial_institution      fins," +
+                "    unl_domain_mapping         unl" +
+                " WHERE acfi.account_mid                     = :accountMid" +
+                "     AND acfi.financial_institution_mid       = fins.financial_institution_mid" +
+                "     AND fins.start_date                     <= TRUNC(SYSDATE)" +
+                "     AND NVL(fins.end_date,TRUNC(SYSDATE+1)) >= TRUNC(SYSDATE)" +
+                "     AND acfi.facility_attached_lid = unl.domain_lid" +
+                "     AND unl.source_system_fid='COMPASS'" +
+                "     AND unl.domain_name='FACILITY'" +
+                "     AND unl.SOURCE_SYSTEM_VALUE NOT LIKE 'RIP%'" +
+                "     AND unl.SOURCE_SYSTEM_VALUE NOT LIKE 'RIF%'" +
+                " UNION" +
+                " SELECT" +
+                "     pkgUtility.fnGetDomainValue( 'FACILITY',acfi.facility_attached_lid)" +
+                "                                AS usage," +
+                "     fins.financial_inst_name   AS bankName," +
+                "     fins.branch_name           AS branchName," +
+                "     fins.financial_inst_code   AS bankBSB," +
+                "     fins.account_number        AS accountNumber," +
+                "     fins.account_name          AS accountName," +
+                "     a.account_mid" +
+                " FROM acct_financial_institution acfi," +
+                "     financial_institution      fins," +
+                "     unl_domain_mapping         unl," +
+                "     account                    a" +
+                " WHERE acfi.account_mid                     = :accountMid" +
+                "     AND acfi.financial_institution_mid       = fins.financial_institution_mid" +
+                "     AND fins.start_date                     <= TRUNC(SYSDATE)" +
+                "     AND NVL(fins.end_date,TRUNC(SYSDATE+1)) >= TRUNC(SYSDATE)" +
+                "     AND acfi.facility_attached_lid = unl.domain_lid" +
+                "     AND unl.source_system_fid='COMPASS'" +
+                "     AND unl.domain_name='FACILITY'" +
+                "     AND unl.SOURCE_SYSTEM_VALUE  LIKE 'RIP%'" +
+                "     AND a.account_mid = acfi.account_mid" +
+                " UNION" +
+                " SELECT" +
+                "     pkgUtility.fnGetDomainValue( 'FACILITY',acfi.facility_attached_lid)" +
+                "                                AS usage," +
+                "     fins.financial_inst_name   AS bankName," +
+                "     fins.branch_name           AS branchName," +
+                "     fins.financial_inst_code   AS bankBSB," +
+                "     fins.account_number        AS accountNumber," +
+                "     fins.account_name          AS accountName," +
+                "     a.account_mid" +
+                " FROM acct_financial_institution acfi," +
+                "     financial_institution      fins," +
+                "     unl_domain_mapping         unl," +
+                "     account                    a" +
+                " WHERE acfi.account_mid                     = :accountMid" +
+                "     AND acfi.financial_institution_mid       = fins.financial_institution_mid" +
+                "     AND fins.start_date                     <= TRUNC(SYSDATE)" +
+                "     AND NVL(fins.end_date,TRUNC(SYSDATE+1)) >= TRUNC(SYSDATE)" +
+                "     AND acfi.facility_attached_lid = unl.domain_lid" +
+                "     AND unl.source_system_fid='COMPASS'" +
+                "     AND unl.domain_name='FACILITY'" +
+                "     AND unl.SOURCE_SYSTEM_VALUE  LIKE 'RIF%'" +
+                "         AND a.account_mid = acfi.account_mid";
+
+
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("accountMid" , accountMid),
+                new BeanPropertyRowMapper<>(BankAccountDetails.class));
+
+    }
+
+
+    @LogMe
+
+    public List<CurrentFundInvestment> getCurrentFundInvestment(String accountMid) {
+        String sql = "SELECT  ipa.apir_Code as apirCode," +
+                "round(lbi.units * lup.unit_price, 2) balance," +
+                "    INITCAP(TO_CHAR(lbi.effective_date, 'DD/MM/YYYY')) asAtDate," +
+                "    i.investment_name fundName," +
+                "    lup.unit_price unitPrice," +
+                "    lbi.units unitsHeld," +
+                "    a.account_mid," +
+                "    udv.Domain_value fundType" +
+                " FROM account a," +
+                "    latest_balance_investment lbi," +
+                "    latest_unit_price lup," +
+                "    investment i," +
+                "    investment_product_apir ipa," +
+                "    advisor_client_mview acm," +
+                "    unl_domain_value udv " +
+                "WHERE a.account_mid = :accountMid" +
+                "    and lbi.account_mid = a.account_mid" +
+                "    and lup.investment_mid = lbi.investment_mid" +
+                "    and i.investment_mid = lbi.investment_mid" +
+                "    and i.investment_active_yn = 'Y'" +
+                "    and ipa.INVESTMENT_MID = lbi.INVESTMENT_MID" +
+                "    and acm.account_mid = a.account_mid" +
+                "    and acm.product_mid = ipa.product_mid" +
+                "    and udv.domain_name = 'UNIT_TYPE'" +
+                "    and udv.Domain_lid = lbi.unit_type_lid" +
+                "    and lbi.units > 0";
+
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("accountMid" , accountMid),
+                new BeanPropertyRowMapper<>(CurrentFundInvestment.class));
+
+    }
+
+
+    @LogMe
+
+    public List<BpayBillerDetails> getBpayBillerDetails(String accountMid) {
+        String sql = "select bc.biller_Code as billerCode," +
+                "bc.description as description," +
+                "bc.grouptype as group_test," +
+                "bc.refnumber_suffix as refNumberSuffix," +
+                "concat(aod.bpay_account_number,bc.refnumber_suffix) as refNumber," +
+                "aod.bpay_account_number" +
+                " from biller_codes bc" +
+                " join account a on a.product_mid = bc.product_mid" +
+                " join account_other_detail aod on a.account_mid = aod.account_mid" +
+                " WHERE a.account_mid = :accountMid";
+
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("accountMid" , accountMid),
+                new BeanPropertyRowMapper<>(BpayBillerDetails.class));
+
+    }
+
 
 
 }

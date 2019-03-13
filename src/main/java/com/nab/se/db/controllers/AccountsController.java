@@ -129,6 +129,25 @@ public class AccountsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{accountMid}/BankAccountDetails")
+    public ResponseEntity<List<BankAccountDetails>> getBankAccountDetails (@PathVariable("accountMid") String accountMid) {
+        List<BankAccountDetails> response = accountService.getBankAccountDetails(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/CurrentFundsInvestment")
+    public ResponseEntity<List<CurrentFundInvestment>> getCurrentFundInvestment (@PathVariable("accountMid") String accountMid) {
+        List<CurrentFundInvestment> response = accountService.getCurrentFundInvestment(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{accountMid}/BPAYBillerDetails")
+    public ResponseEntity<List<BpayBillerDetails>> getBpayBillerDetails (@PathVariable("accountMid") String accountMid) {
+        List<BpayBillerDetails> response = accountService.getBpayBillerDetails(accountMid);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 
 
 

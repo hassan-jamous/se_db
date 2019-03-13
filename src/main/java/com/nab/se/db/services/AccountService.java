@@ -80,12 +80,31 @@ public class AccountService {
         return accountComponent.getCustomerInformation(this.productTypeConverter.convertProduct(productType));
     }
 
+    public List<BankAccountDetails> getBankAccountDetails (String accountMid) {
+        return accountComponent.getBankAccountDetails(accountMid);
+    }
+
+    public List<CurrentFundInvestment> getCurrentFundInvestment (String accountMid) {
+
+        return accountComponent.getCurrentFundInvestment(accountMid);
+    }
+
+    public List<BpayBillerDetails> getBpayBillerDetails (String accountMid) {
+
+        return accountComponent.getBpayBillerDetails(accountMid);
+    }
+
+
+
+
+
 
 
     @LogMe
     public Combination getCombination(String productType) throws Exception {
         LOGGER.info("Inside Combination");
         IncomeLevel il = accountComponent.getAccountIncomeLevel(this.productTypeConverter.convertProduct(productType));
+        LOGGER.info("The account mid used for this combination is " + il.getAccountToken());
         RegularIncomePaymentDetails ps= accountComponent.getRegularIncomePaymentDetails(this.productTypeConverter.convertProduct(productType),  il.getAccountToken());
         PreservationDetails pd = accountComponent.getAccountPreservationDetails(this.productTypeConverter.convertProduct(productType), il.getAccountToken());
         List<FundStrategy> fs = accountComponent.getFundStrategy(il.getAccountToken());
